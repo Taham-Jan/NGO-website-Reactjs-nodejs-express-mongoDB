@@ -4,6 +4,7 @@ import './BackgroundStyle.css'
 import ngo from '../assets/bgvideo.mp4'
 const Background = () => {
 
+  
   return (
     <div className='vid_div'>
     <video autoPlay loop muted id='video'>
@@ -11,7 +12,9 @@ const Background = () => {
     </video>
     <div className='txt_div'>
         <h1>Galaxy. Travel.</h1>
-        <div id="quotes">BE THE CHANGE YOU WANT TO SEE IN THE WORLD !</div>
+        <br/>
+        <h4>BE THE CHANGE YOU WANT TO SEE IN THE WORLD !</h4>
+        <br/>
         <div>
             <Link to='/training' className='btn'>Training</Link>
             <Link to='/contact' className='btn btn-light'>Launch</Link>

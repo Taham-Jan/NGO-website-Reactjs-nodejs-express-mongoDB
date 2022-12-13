@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react'
+import {useSelector, useDispatch} from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import {toast} from 'react-toastify'
+import { register,reset } from '../features/auth/authSlice'
+import Spinner from './Spinner'
 import './Register.css'
 import {Link} from 'react-router-dom'
+
 const Register = () => {
 
 const [formData,setFormData] = useState({
@@ -12,6 +18,26 @@ const [formData,setFormData] = useState({
 })
 
 const {name,email,number,password,password2} = formData
+
+const navigate = useNavigate()
+const dispatch = useDispatch()
+
+const { user, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  )
+
+useEffect(() => {
+if(isError){
+    toast.error(message)
+}
+if(isSuccess || user)
+{
+    navigate('/')
+}
+dispatch(reset())
+
+},[user,isError,isSuccess, message, navigate, dispatch])
+
 const onChange = (e) => {
     setFormData((prevState)=>({
         ...prevState,
@@ -20,6 +46,23 @@ const onChange = (e) => {
 }
 const onSubmit = (e) => {
     e.preventDefault()
+
+    if(password !== password2){
+        toast.error('Password Do Not Match')
+    }
+    else{
+        const userData = {
+            name,
+            email,
+            number,
+            password,
+        }
+        dispatch(register(userData))
+    }
+}
+if(isLoading)
+{
+    return<Spinner/>
 }
     return (
         
@@ -36,9 +79,9 @@ const onSubmit = (e) => {
             <input type="number" className='form-control' id='number' name="number" value={number} placeholder="Enter Your Contact Number" onChange={ onChange }></input>
             <input type="password" className='form-control' id='password' name="password" value={password} placeholder="Enter Your password" onChange={ onChange }></input>
             <input type="password" className='form-control' id='password2' name="password2" value={password2} placeholder="Re-enter Your Password" onChange={ onChange }></input>
-            <div className="button">Register</div>
+            <button className='btnSub' type='submit'>Register</button>
             <h1>or</h1>
-            <Link to='/login'><div className="button" >Login</div></Link>
+            <Link to='/login'><div className="btnSub" >Login</div></Link>
         </form>
         </section >
              <br/>
